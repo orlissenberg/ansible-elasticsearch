@@ -1,2 +1,46 @@
 ---
 # tasks file for elasticsearch/
+
+- include: main-apt.yml
+  when: ansible_os_family == "Debian"
+
+- include: main-plugins.yml
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-synonym-tokenfilter.html
+# http://wordnetcode.princeton.edu/3.0/WNprolog-3.0.tar.gz
+#{
+#    "index" : {
+#        "analysis" : {
+#            "analyzer" : {
+#                "synonym" : {
+#                    "tokenizer" : "whitespace",
+#                    "filter" : ["synonym"]
+#                }
+#            },
+#            "filter" : {
+#                "synonym" : {
+#                    "type" : "synonym",
+#                    "format" : "wordnet",
+#                    "synonyms_path" : "analysis/synonym.txt"
+#                }
+#            }
+#        }
+#    }
+#}
+#
+# The above configures a synonym filter, with a path of analysis/synonym.txt (relative to the config location).
+
+- file: path=/etc/elasticsearch/analysis state=directory
+- copy: src=synonyms.pl dest=/etc/elasticsearch/analysis/synonyms.txt owner=root group=root mode=0644
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/1.x/setup-configuration.html
+
+# Environment Variables
+- template: src=elasticsearch.sh.j2 dest=/etc/profile.d/elasticsearch.sh owner=root group=root mode=0755
+
+- lineinfile: dest=/etc/environment regexp="^ES_MIN_MEM" line="ES_MIN_MEM={{ es_min_mem }}" state=present
+- lineinfile: dest=/etc/environment regexp="^ES_MAX_MEM" line="ES_MAX_MEM={{ es_max_mem }}" state=present
+
+- template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml owner=root group=root mode=0644
+  notify: restart-elasticsearch
+

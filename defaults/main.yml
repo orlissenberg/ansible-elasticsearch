@@ -1,2 +1,15 @@
 ---
 # defaults file for elasticsearch/
+
+es_cluster_name: "elasticsearch"
+es_node_master: "true"
+es_node_data: "true"
+es_bootstrap_mlockall: "false"
+es_network_bind_host: "0.0.0.0"
+es_network_publish_host: "0.0.0.0"
+es_transport_tcp_port: 9300
+es_http_port: 9200
+es_discovery_zen_ping_multicast_enabled: "false"
+es_discovery_zen_ping_unicast_hosts: "[]"
+es_max_mem: 2g
+es_min_mem: 256m
