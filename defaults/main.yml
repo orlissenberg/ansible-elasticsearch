@@ -1,15 +1,17 @@
 ---
 # defaults file for elasticsearch/
 
+remove_purge_1_6: false
+
 es_cluster_name: "elasticsearch"
-es_node_master: "true"
-es_node_data: "true"
-es_bootstrap_mlockall: "false"
+es_node_name: "elasticsearch_node_0"
+es_node_data_path: "/var/lib/elasticsearch"
+es_node_logs_path: "/var/log/elasticsearch"
+es_bootstrap_mlockall: "true"
 es_network_bind_host: "0.0.0.0"
-es_network_publish_host: "0.0.0.0"
-es_transport_tcp_port: 9300
 es_http_port: 9200
-es_discovery_zen_ping_multicast_enabled: "false"
-es_discovery_zen_ping_unicast_hosts: "[]"
+es_discovery_zen_ping_unicast_hosts: "[\"127.0.0.1\", \"[::1]\"]"
 es_max_mem: 2g
 es_min_mem: 256m
+
+install_marvel: true

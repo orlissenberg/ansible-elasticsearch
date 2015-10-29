@@ -6,7 +6,7 @@
 
 # Add the repository definition to your /etc/apt/sources.list file
 - name: Add repository
-  apt_repository: repo="deb http://packages.elastic.co/elasticsearch/1.6/debian stable main"
+  apt_repository: repo="deb http://packages.elastic.co/elasticsearch/2.x/debian stable main"
   args:
     state: present
     update_cache: yes

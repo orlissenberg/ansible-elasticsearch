@@ -2,7 +2,7 @@
 # defaults file for elasticsearch/
 
 # HEAD
-- command: bin/plugin -install mobz/elasticsearch-head
+- command: bin/plugin install mobz/elasticsearch-head
   args:
     chdir: /usr/share/elasticsearch
     creates: /usr/share/elasticsearch/plugins/head
@@ -12,10 +12,23 @@
   with_items: ansible_all_ipv4_addresses
 
 # KOPF
-- command: bin/plugin -install lmenezes/elasticsearch-kopf/master
+- command: bin/plugin install lmenezes/elasticsearch-kopf/master
   args:
     chdir: /usr/share/elasticsearch
     creates: /usr/share/elasticsearch/plugins/kopf
 
 - debug: msg="http://{{ item }}:9200/_plugin/kopf"
   with_items: ansible_all_ipv4_addresses
+
+# MARVEL
+- command: bin/plugin install license
+  args:
+    chdir: /usr/share/elasticsearch
+    creates: /usr/share/elasticsearch/plugins/license
+  when: install_marvel == true
+
+- command: bin/plugin install marvel-agent
+  args:
+    chdir: /usr/share/elasticsearch
+    creates: /usr/share/elasticsearch/plugins/marvel-agent
+  when: install_marvel == true

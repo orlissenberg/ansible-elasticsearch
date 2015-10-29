@@ -1,6 +1,9 @@
 ---
 # tasks file for elasticsearch/
 
+- include: remove-1.6.yml
+  when: remove_purge_1_6 == true
+
 - include: main-apt.yml
   when: ansible_os_family == "Debian"
 
@@ -41,6 +44,9 @@
 - lineinfile: dest=/etc/environment regexp="^ES_MIN_MEM" line="ES_MIN_MEM={{ es_min_mem }}" state=present
 - lineinfile: dest=/etc/environment regexp="^ES_MAX_MEM" line="ES_MAX_MEM={{ es_max_mem }}" state=present
 
+# Configuration
 - template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml owner=root group=root mode=0644
   notify: restart-elasticsearch
 
+- template: src=logging.yml.j2 dest=/etc/elasticsearch/logging.yml owner=root group=root mode=0644
+  notify: restart-elasticsearch
