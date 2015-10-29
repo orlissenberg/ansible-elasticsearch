@@ -2,14 +2,18 @@
 # defaults file for elasticsearch/
 
 # HEAD
-- command: bin/plugin install mobz/elasticsearch-head
+# It seems broken at this point in time.
+- command: bin/plugin remove head
   args:
     chdir: /usr/share/elasticsearch
-    creates: /usr/share/elasticsearch/plugins/head
 
-# ansible -m setup webservers -i hosts
-- debug: msg="http://{{ item }}:9200/_plugin/head"
-  with_items: ansible_all_ipv4_addresses
+#- command: bin/plugin install mobz/elasticsearch-head
+#  args:
+#    chdir: /usr/share/elasticsearch
+#    creates: /usr/share/elasticsearch/plugins/head
+#
+#- debug: msg="http://{{ item }}:9200/_plugin/head"
+#  with_items: ansible_all_ipv4_addresses
 
 # KOPF
 - command: bin/plugin install lmenezes/elasticsearch-kopf/master
@@ -25,10 +29,10 @@
   args:
     chdir: /usr/share/elasticsearch
     creates: /usr/share/elasticsearch/plugins/license
-  when: install_marvel == true
+  when: es_install_marvel == true
 
 - command: bin/plugin install marvel-agent
   args:
     chdir: /usr/share/elasticsearch
     creates: /usr/share/elasticsearch/plugins/marvel-agent
-  when: install_marvel == true
+  when: es_install_marvel == true

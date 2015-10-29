@@ -13,7 +13,7 @@ EOF
 # Create group_vars for the webservers
 mkdir -p $TMP_DIR/group_vars 2> /dev/null
 cat << EOF > $TMP_DIR/group_vars/webservers
-remove_purge_1_6: false
+es_remove_purge_1_6: false
 EOF
 
 # Create Ansible config

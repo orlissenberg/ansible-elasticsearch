@@ -2,7 +2,7 @@
 # tasks file for elasticsearch/
 
 - include: remove-1.6.yml
-  when: remove_purge_1_6 == true
+  when: es_remove_purge_1_6 == true
 
 - include: main-apt.yml
   when: ansible_os_family == "Debian"

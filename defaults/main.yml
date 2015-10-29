@@ -1,7 +1,7 @@
 ---
 # defaults file for elasticsearch/
 
-remove_purge_1_6: false
+es_remove_purge_1_6: false
 
 es_cluster_name: "elasticsearch"
 es_node_name: "elasticsearch_node_0"
@@ -14,4 +14,4 @@ es_discovery_zen_ping_unicast_hosts: "[\"127.0.0.1\", \"[::1]\"]"
 es_max_mem: 2g
 es_min_mem: 256m
 
-install_marvel: true
+es_install_marvel: true
