@@ -13,7 +13,9 @@ EOF
 # Create group_vars for the webservers
 mkdir -p $TMP_DIR/group_vars 2> /dev/null
 cat << EOF > $TMP_DIR/group_vars/webservers
-es_remove_purge_1_6: false
+es_cluster_name: "elasticsearch_test"
+es_initial_total_heap_space: 1g
+es_maximum_total_heap_space: 1g
 EOF
 
 # Create Ansible config
@@ -29,7 +31,7 @@ cat << EOF > $TMP_DIR/playbook.yml
 
 - hosts: webservers
   gather_facts: yes
-  sudo: no
+  become: true
 
   roles:
     - ansible-elasticsearch

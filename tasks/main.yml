@@ -1,9 +1,6 @@
 ---
 # tasks file for elasticsearch/
 
-- include: remove-1.6.yml
-  when: es_remove_purge_1_6 == true
-
 - include: main-apt.yml
   when: ansible_os_family == "Debian"
 
@@ -36,17 +33,14 @@
 - file: path=/etc/elasticsearch/analysis state=directory
 - copy: src=synonyms.pl dest=/etc/elasticsearch/analysis/synonyms.txt owner=root group=root mode=0644
 
-# https://www.elastic.co/guide/en/elasticsearch/reference/1.x/setup-configuration.html
+# https://www.elastic.co/guide/en/elasticsearch/reference/5.x/settings.html
 
-# Environment Variables
-- template: src=elasticsearch.sh.j2 dest=/etc/profile.d/elasticsearch.sh owner=root group=root mode=0755
-
-- lineinfile: dest=/etc/environment regexp="^ES_MIN_MEM" line="ES_MIN_MEM={{ es_min_mem }}" state=present
-- lineinfile: dest=/etc/environment regexp="^ES_MAX_MEM" line="ES_MAX_MEM={{ es_max_mem }}" state=present
+# Environment variables
+- template: src=jvm.options.j2 dest=/etc/elasticsearch/jvm.options owner=root group=root mode=0755
 
 # Configuration
 - template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml owner=root group=root mode=0644
   notify: restart-elasticsearch
 
-- template: src=logging.yml.j2 dest=/etc/elasticsearch/logging.yml owner=root group=root mode=0644
+- template: src=log4j2.properties.j2 dest=/etc/elasticsearch/log4j2.properties owner=root group=root mode=0644
   notify: restart-elasticsearch

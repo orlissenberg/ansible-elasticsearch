@@ -24,7 +24,7 @@ node.name: {{ es_node_name }}
 #
 # Add custom attributes to the node:
 #
-# node.rack: r1
+node.attr.rack: {{ es_rack_name }}
 #
 # ----------------------------------- Paths ------------------------------------
 #
@@ -40,16 +40,17 @@ path.logs: {{ es_node_logs_path }}
 #
 # Lock the memory on startup:
 #
-bootstrap.mlockall: {{ es_bootstrap_mlockall }}
+bootstrap.memory_lock: {{ es_bootstrap_memory_lock }}
 #
-# Make sure that the `ES_HEAP_SIZE` environment variable is set to about half the memory
-# available on the system and that the owner of the process is allowed to use this limit.
+# Make sure that the heap size is set to about half the memory available
+# on the system and that the owner of the process is allowed to use this
+# limit.
 #
 # Elasticsearch performs poorly when the system is swapping the memory.
 #
 # ---------------------------------- Network -----------------------------------
 #
-# Set the bind adress to a specific IP (IPv4 or IPv6):
+# Set the bind address to a specific IP (IPv4 or IPv6):
 #
 network.host: {{ es_network_bind_host }}
 #
@@ -60,18 +61,7 @@ http.port: {{ es_http_port }}
 # For more information, see the documentation at:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html>
 #
-# ---------------------------------- Gateway -----------------------------------
-#
-# Block initial recovery after a full cluster restart until N nodes are started:
-#
-# gateway.recover_after_nodes: 3
-#
-# For more information, see the documentation at:
-# <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html>
-#
 # --------------------------------- Discovery ----------------------------------
-#
-# Elasticsearch nodes will find each other via unicast, by default.
 #
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
@@ -80,17 +70,22 @@ discovery.zen.ping.unicast.hosts: {{ es_discovery_zen_ping_unicast_hosts }}
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of nodes / 2 + 1):
 #
-# discovery.zen.minimum_master_nodes: 3
+#discovery.zen.minimum_master_nodes: 3
 #
 # For more information, see the documentation at:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery.html>
 #
+# ---------------------------------- Gateway -----------------------------------
+#
+# Block initial recovery after a full cluster restart until N nodes are started:
+#
+#gateway.recover_after_nodes: 3
+#
+# For more information, see the documentation at:
+# <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html>
+#
 # ---------------------------------- Various -----------------------------------
-#
-# Disable starting multiple nodes on a single system:
-#
-# node.max_local_storage_nodes: 1
 #
 # Require explicit names when deleting indices:
 #
-# action.destructive_requires_name: true
+#action.destructive_requires_name: true

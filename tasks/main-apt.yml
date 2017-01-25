@@ -1,17 +1,21 @@
 ---
-# tasks file for elasticsearch/
+# tasks file for elasticsearch
 
 # Download and install the Public Signing Key
-- apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+- apt_key: url=https://artifacts.elastic.co/GPG-KEY-elasticsearch state=present
+
+- apt: name=apt-transport-https
+  args:
+    state: present
 
 # Add the repository definition to your /etc/apt/sources.list file
 - name: Add repository
-  apt_repository: repo="deb http://packages.elastic.co/elasticsearch/2.x/debian stable main"
+  apt_repository: repo="deb https://artifacts.elastic.co/packages/5.x/apt stable main"
   args:
     state: present
     update_cache: yes
 
-- name: Install
+- name: Install Elasticsearch
   apt: name=elasticsearch
   args:
     state: present

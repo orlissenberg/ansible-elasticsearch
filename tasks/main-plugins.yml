@@ -1,38 +1,18 @@
 ---
 # defaults file for elasticsearch/
 
-# HEAD
-# It seems broken at this point in time.
-- command: bin/plugin remove head
+# X-Pack
+# https://www.elastic.co/guide/en/x-pack/current/security-getting-started.html
+- command: bin/elasticsearch-plugin install x-pack
   args:
     chdir: /usr/share/elasticsearch
+    creates: /usr/share/elasticsearch/plugins/x-pack
+  when: es_install_xpack == true
+  notify: restart-elasticsearch
 
-#- command: bin/plugin install mobz/elasticsearch-head
-#  args:
-#    chdir: /usr/share/elasticsearch
-#    creates: /usr/share/elasticsearch/plugins/head
-#
-#- debug: msg="http://{{ item }}:9200/_plugin/head"
-#  with_items: ansible_all_ipv4_addresses
-
-# KOPF
-- command: bin/plugin install lmenezes/elasticsearch-kopf/master
+- command: bin/elasticsearch-plugin remove x-pack
   args:
     chdir: /usr/share/elasticsearch
-    creates: /usr/share/elasticsearch/plugins/kopf
-
-- debug: msg="http://{{ item }}:9200/_plugin/kopf"
-  with_items: ansible_all_ipv4_addresses
-
-# MARVEL
-- command: bin/plugin install license
-  args:
-    chdir: /usr/share/elasticsearch
-    creates: /usr/share/elasticsearch/plugins/license
-  when: es_install_marvel == true
-
-- command: bin/plugin install marvel-agent
-  args:
-    chdir: /usr/share/elasticsearch
-    creates: /usr/share/elasticsearch/plugins/marvel-agent
-  when: es_install_marvel == true
+    removes: /usr/share/elasticsearch/plugins/x-pack
+  when: es_install_xpack == false
+  notify: restart-elasticsearch
